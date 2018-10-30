@@ -5,7 +5,7 @@ BEGIN_DOC
 END_DOC
   implicit none
 
-  double precision::abij_antispinint,ijab_antispinint,get_u_el,get_v_el,D_ijab,CCD_energy
+  double precision::abij_antispinint,ijab_antispinint,get_u_el,get_v_el,CCD_energy
   integer :: iteration_CCD,i,j,a,b
   iteration_CCD=0
   call write_time(6)
@@ -19,7 +19,7 @@ END_DOC
         do j=1,size(t_coeff,2)
           do a=1,size(t_coeff,3)
             do b=1,size(t_coeff,4)
-              t_coeff(i,j,a,b)=-(abij_antispinint(a,b,i,j)+get_u_el(i,j,a,b)+get_v_el(i,j,a,b))/D_ijab(i,j,a,b)
+              t_coeff(i,j,a,b)=-(abij_antispinint(a,b,i,j)+get_u_el(i,j,a,b)+get_v_el(i,j,a,b))/ijab_D(i,j,a,b)
                CCD_energy+=ijab_antispinint(i,j,a,b)*t_coeff(i,j,a,b)
             end do
           end do
