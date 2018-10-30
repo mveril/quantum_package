@@ -34,16 +34,16 @@ double precision function offset_spinint(p,q,r,s,isvirtp,isvirtq,isvirtr,isvirts
   soff=s
 
   if (isvirtp) then
-    poff+=elec_num
+    poff+=n_spin_occ
   end if
   if (isvirtq) then
-    qoff+=elec_num
+    qoff+=n_spin_occ
   end if
   if (isvirtr) then
-    roff+=elec_num
+    roff+=n_spin_occ
   end if
   if (isvirts) then
-    soff+=elec_num
+    soff+=n_spin_occ
   end if
   offset_spinint=spinint(poff,qoff,roff,soff)
 end function

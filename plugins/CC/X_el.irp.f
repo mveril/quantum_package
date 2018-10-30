@@ -9,11 +9,10 @@ double precision function get_X1_el(k,l,i,j)
   
   integer,intent(in) :: k,l,i,j
   double precision :: ijab_antispinint 
-  integer :: c,d,n_spinvirt
+  integer :: c,d
   get_X1_el=0d0
-  n_spinvirt=mo_tot_num*2-elec_num
-  do c = 1,n_spinvirt
-    do d = 1,n_spinvirt
+  do c = 1,n_spin_virt
+    do d = 1,n_spin_virt
       get_X1_el += ijab_antispinint(k,l,c,d)*t_coeff(k,l,c,d)
     end do
   end do
@@ -29,12 +28,11 @@ double precision function get_X2_el(b,c)
   
   integer,intent(in) :: b,c
   double precision :: ijab_antispinint
-  integer::k,l,d,n_spinvirt
+  integer::k,l,d
   get_X2_el = 0d0
-  n_spinvirt=mo_tot_num*2-elec_num
-  do k = 1,elec_num
-    do l = 1,elec_num
-      do d = 1,n_spinvirt
+  do k = 1,n_spin_occ
+    do l = 1,n_spin_occ
+      do d = 1,n_spin_virt
         get_X2_el += ijab_antispinint(k,l,c,d)*t_coeff(k,l,b,d)
       enddo
     enddo
@@ -50,12 +48,11 @@ double precision function get_x3_el(k,j)
 
   integer,intent(in) :: k,j
   double precision :: ijab_antispinint
-  integer :: l,c,d,n_spinvirt
+  integer :: l,c,d
   get_X3_el=0d0
-  n_spinvirt=mo_tot_num*2-elec_num
-  do l = 1, elec_num
-    do c = 1, n_spinvirt
-      do d =1, n_spinvirt 
+  do l = 1, n_spin_occ
+    do c = 1, n_spin_virt
+      do d =1, n_spin_virt 
         get_X3_el += ijab_antispinint(k,l,c,d)*t_coeff(j,l,c,d)
       enddo
     enddo
@@ -72,11 +69,10 @@ double precision function get_x4_el(i,l,a,d)
   
   integer,intent(in)::i,l,a,d
   double precision:: ijab_antispinint
-  integer::k,c,n_spinvirt
+  integer::k,c
   get_X4_el=0d0
-  n_spinvirt=mo_tot_num*2-elec_num
-  do k = 1,elec_num
-    do c = 1,n_spinvirt
+  do k = 1,n_spin_occ
+    do c = 1,n_spin_virt
       get_X4_el += ijab_antispinint(k,l,c,d)*t_coeff(i,k,a,c)
     end do
   end do
