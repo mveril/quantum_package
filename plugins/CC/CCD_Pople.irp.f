@@ -5,31 +5,37 @@ BEGIN_DOC
 END_DOC
   implicit none
 
-  double precision::abij_antispinint,ijab_antispinint,get_u_el,get_v_el,CCD_energy
+  double precision::abij_antispinint,ijab_antispinint,get_u_el,get_v_el,CCD_corr
   integer :: iteration_CCD,i,j,a,b
+  double precision :: conv,get_conv_max
+  double precision :: thresh_CC
   iteration_CCD=0
+  thresh_CC=1d-7
+  conv=thresh_CC+1d0
   call write_time(6)
-  do while(iteration_CCD < 1000)
+  do while(iteration_CCD < 1000 .or. conv>thresh_CC)
       iteration_CCD += 1
-
       call write_int(6,iteration_CCD,'Current CCD iteration')
-      CCD_energy=0d0
-
+      CCD_corr=0d0
       do i=1,size(t_coeff,1)
         do j=1,size(t_coeff,2)
           do a=1,size(t_coeff,3)
             do b=1,size(t_coeff,4)
               t_coeff(i,j,a,b)=-(abij_antispinint(a,b,i,j)+get_u_el(i,j,a,b)+get_v_el(i,j,a,b))/ijab_D(i,j,a,b)
-               CCD_energy+=ijab_antispinint(i,j,a,b)*t_coeff(i,j,a,b)
+               CCD_corr+=ijab_antispinint(i,j,a,b)*t_coeff(i,j,a,b)
             end do
           end do
         end do
       end do
 
-      CCD_energy = 0.25d0*CCD_energy
-      call write_double(6,HF_energy+CCD_energy,"CCD corrected energy")
+       CCD_corr*=0.25d0
+      call write_double(6,HF_energy+CCD_corr,"CCD corrected energy")
+      conv=get_conv_max(CCD_corr)
+      call write_double(6,conv,"Current convergence")
       TOUCH t_coeff 
   end do
   call write_time(6)
-  call write_double(6,hf_energy+CCD_energy,"Final CCD corrected energy")
+  call write_double(6,hf_energy+CCD_corr,"Final CCD corrected energy")
+  call write_double(6,conv,"Final convergence")
+
 end subroutine
