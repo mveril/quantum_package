@@ -13,7 +13,7 @@ double precision function spinint(p,q,r,s)
   integer :: c,d
   spinint=0d0
   if (mod(p,2) == mod(r,2)) then
-    spinint = get_mo_bielec_integral(p/2+1,q/2+1,r/2+1,s/2+1,mo_integrals_map)
+    spinint = get_mo_bielec_integral((p+1)/2,(q+1)/2,(r+1)/2,(s+1)/2,mo_integrals_map)
   end if
 end function
 
