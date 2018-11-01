@@ -11,7 +11,7 @@ END_DOC
   iteration_CCD=0
   conv=thresh_CC+1d0
   call write_time(6)
-  do while(iteration_CCD < n_it_CC_max  .or. conv>thresh_CC)
+  do while(iteration_CCD < n_it_CC_max  .and. conv>thresh_CC)
       iteration_CCD += 1
       call write_int(6,iteration_CCD,'Current CCD iteration')
       CCD_corr=0d0
