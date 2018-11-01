@@ -8,12 +8,10 @@ END_DOC
   double precision::abij_antispinint,ijab_antispinint,get_u_el,get_v_el,CCD_corr
   integer :: iteration_CCD,i,j,a,b
   double precision :: conv,get_conv_max
-  double precision :: thresh_CC
   iteration_CCD=0
-  thresh_CC=1d-7
   conv=thresh_CC+1d0
   call write_time(6)
-  do while(iteration_CCD < 1000 .or. conv>thresh_CC)
+  do while(iteration_CCD < n_it_CC_max  .or. conv>thresh_CC)
       iteration_CCD += 1
       call write_int(6,iteration_CCD,'Current CCD iteration')
       CCD_corr=0d0
