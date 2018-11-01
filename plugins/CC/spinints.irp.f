@@ -29,7 +29,7 @@ double precision function offset_spinint(p,q,r,s,isvirtp,isvirtq,isvirtr,isvirts
   logical,intent(in) :: isvirtp,isvirtq,isvirtr,isvirts
   integer::poff,qoff,roff,soff
   poff=p
-  qoff=s
+  qoff=q
   roff=r
   soff=s
 
