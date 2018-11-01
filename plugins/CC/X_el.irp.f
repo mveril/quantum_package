@@ -13,7 +13,7 @@ double precision function get_X1_el(k,l,i,j)
   get_X1_el=0d0
   do c = 1,n_spin_virt
     do d = 1,n_spin_virt
-      get_X1_el += ijab_antispinint(k,l,c,d)*t_coeff(k,l,c,d)
+      get_X1_el += ijab_antispinint(k,l,c,d)*t_coeff(i,j,c,d)
     end do
   end do
 end function
