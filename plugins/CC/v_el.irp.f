@@ -18,18 +18,18 @@ double precision function get_v_el(i,j,a,b)
   do k = 1,n_spin_occ
     do l = 1,n_spin_occ
   !KL loop
-      pkl += get_X1_el(k,l,i,j)*t_coeff(k,l,a,b)
+      pkl += get_X1_el(k,l,i,j)*t_ampli(k,l,a,b)
     end do
     do c = 1,n_spin_virt
   !KC loop
-      pkc += get_X4_el(i,k,a,c)*t_coeff(j,k,b,c)+get_X4_el(i,k,b,c)*t_coeff(k,j,a,c)
+      pkc += get_X4_el(i,k,a,c)*t_ampli(j,k,b,c)+get_X4_el(i,k,b,c)*t_ampli(k,j,a,c)
     end do
     !K only part
-    pk +=get_X3_el(k,j)*t_coeff(i,k,a,b)+get_X3_el(k,i)*t_coeff(k,j,a,b)
+    pk +=get_X3_el(k,j)*t_ampli(i,k,a,b)+get_X3_el(k,i)*t_ampli(k,j,a,b)
   end do
   do c = 1,n_spin_virt
   !c only part
-    pc+=get_X2_el(b,c)*t_coeff(i,j,a,c)+get_X2_el(a,c)*t_coeff(i,j,c,b)
+    pc+=get_X2_el(b,c)*t_ampli(i,j,a,c)+get_X2_el(a,c)*t_ampli(i,j,c,b)
   end do
   get_v_el=0.25d0*pkl-0.5d0*pc-0.5d0*pk+pkc
 end function

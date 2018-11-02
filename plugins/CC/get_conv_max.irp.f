@@ -14,7 +14,7 @@ double precision function get_conv_max(e_corr)
     do j=1,n_spin_occ
       do a=1,n_spin_virt
         do b=1,n_spin_virt
-          get_conv_max=abij_antispinint(a,b,i,j)+ijab_D(i,j,a,b)*t_coeff(i,j,a,b)+get_u_el(i,j,a,b)+get_v_el(i,j,a,b)
+          get_conv_max=abij_antispinint(a,b,i,j)+ijab_D(i,j,a,b)*t_ampli(i,j,a,b)+get_u_el(i,j,a,b)+get_v_el(i,j,a,b)
           get_conv_max=max(dabs(get_conv_max),dabs(old_conv_max))
           old_conv_max=get_conv_max
         end do

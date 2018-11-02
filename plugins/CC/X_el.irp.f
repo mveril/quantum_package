@@ -13,7 +13,7 @@ double precision function get_X1_el(k,l,i,j)
   get_X1_el=0d0
   do c = 1,n_spin_virt
     do d = 1,n_spin_virt
-      get_X1_el += ijab_antispinint(k,l,c,d)*t_coeff(i,j,c,d)
+      get_X1_el += ijab_antispinint(k,l,c,d)*t_ampli(i,j,c,d)
     end do
   end do
 end function
@@ -33,7 +33,7 @@ double precision function get_X2_el(b,c)
   do k = 1,n_spin_occ
     do l = 1,n_spin_occ
       do d = 1,n_spin_virt
-        get_X2_el += ijab_antispinint(k,l,c,d)*t_coeff(k,l,b,d)
+        get_X2_el += ijab_antispinint(k,l,c,d)*t_ampli(k,l,b,d)
       enddo
     enddo
   enddo
@@ -53,7 +53,7 @@ double precision function get_x3_el(k,j)
   do l = 1, n_spin_occ
     do c = 1, n_spin_virt
       do d =1, n_spin_virt 
-        get_X3_el += ijab_antispinint(k,l,c,d)*t_coeff(j,l,c,d)
+        get_X3_el += ijab_antispinint(k,l,c,d)*t_ampli(j,l,c,d)
       enddo
     enddo
   enddo
@@ -73,7 +73,7 @@ double precision function get_x4_el(i,l,a,d)
   get_X4_el=0d0
   do k = 1,n_spin_occ
     do c = 1,n_spin_virt
-      get_X4_el += ijab_antispinint(k,l,c,d)*t_coeff(i,k,a,c)
+      get_X4_el += ijab_antispinint(k,l,c,d)*t_ampli(i,k,a,c)
     end do
   end do
 end function
