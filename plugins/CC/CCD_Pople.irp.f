@@ -15,10 +15,10 @@ END_DOC
       iteration_CCD += 1
       call write_int(6,iteration_CCD,'Current CCD iteration')
       CCD_corr=0d0
-      do i=1,size(t_ampli,1)
-        do j=1,size(t_ampli,2)
-          do a=1,size(t_ampli,3)
-            do b=1,size(t_ampli,4)
+      do i=1,n_spin_occ
+        do j=1,n_spin_occ
+          do a=1,n_spin_virt
+            do b=1,n_spin_virt
               t_ampli(i,j,a,b)=-(abij_antispinint(a,b,i,j)+get_u_el(i,j,a,b)+get_v_el(i,j,a,b))/ijab_D(i,j,a,b)
                CCD_corr+=ijab_antispinint(i,j,a,b)*t_ampli(i,j,a,b)
             end do
