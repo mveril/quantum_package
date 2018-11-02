@@ -26,14 +26,16 @@ END_DOC
         end do
       end do
 
-       CCD_corr*=0.25d0
-      call write_double(6,HF_energy+CCD_corr,"CCD corrected energy")
+      CCD_corr*=0.25d0
+      call write_double(6,CCD_corr,"Current CCD correction energy")
+      call write_double(6,HF_energy+CCD_corr,"Current CCD corrected energy")
       conv=get_conv_max(CCD_corr)
       call write_double(6,conv,"Current convergence")
       TOUCH t_coeff 
   end do
   call write_time(6)
+  call write_int(6,iteration_CCD,'Number of CCD iteration')
+  call write_double(6,conv,"Final convergence value")
+  call write_double(6,CCD_corr,"Final CCD correction")
   call write_double(6,hf_energy+CCD_corr,"Final CCD corrected energy")
-  call write_double(6,conv,"Final convergence")
-
 end subroutine
