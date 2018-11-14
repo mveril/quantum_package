@@ -12,6 +12,7 @@ double precision function spinint(p,q,r,s)
   double precision :: get_mo_bielec_integral
   integer :: c,d
   spinint=0d0
+  !Non zero only if same spin
   if (mod(p,2) == mod(r,2) .and. mod(q,2)==mod(s,2))  then
     spinint = get_mo_bielec_integral((p+1)/2,(q+1)/2,(r+1)/2,(s+1)/2,mo_integrals_map)
   end if
@@ -32,7 +33,7 @@ double precision function offset_spinint(p,q,r,s,isvirtp,isvirtq,isvirtr,isvirts
   qoff=q
   roff=r
   soff=s
-
+  !Apply ofset if is virtual
   if (isvirtp) then
     poff+=n_spin_occ
   end if
