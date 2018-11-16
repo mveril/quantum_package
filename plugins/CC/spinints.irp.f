@@ -18,36 +18,6 @@ double precision function spinint(p,q,r,s)
   end if
 end function
 
-double precision function offset_spinint(p,q,r,s,isvirtp,isvirtq,isvirtr,isvirts)
-
-  BEGIN_DOC
-  ! ijab spinorbital integrals with virtual offset 
-  END_DOC
-  implicit none
-  
-  double precision :: spinint
-  integer,intent(in) :: p,q,r,s
-  logical,intent(in) :: isvirtp,isvirtq,isvirtr,isvirts
-  integer::poff,qoff,roff,soff
-  poff=p
-  qoff=q
-  roff=r
-  soff=s
-  !Apply ofset if is virtual
-  if (isvirtp) then
-    poff+=n_spin_occ
-  end if
-  if (isvirtq) then
-    qoff+=n_spin_occ
-  end if
-  if (isvirtr) then
-    roff+=n_spin_occ
-  end if
-  if (isvirts) then
-    soff+=n_spin_occ
-  end if
-  offset_spinint=spinint(poff,qoff,roff,soff)
-end function
 double precision function ijab_spinint(i,j,a,b)
   
   BEGIN_DOC
@@ -56,9 +26,15 @@ double precision function ijab_spinint(i,j,a,b)
   
   implicit none
   
-  double precision :: offset_spinint
+  double precision :: spinint
+  
   integer,intent(in) :: i,j,a,b
-  ijab_spinint=offset_spinint(i,j,a,b,.False.,.False.,.True.,.True.) 
+  
+  integer :: aoff,boff 
+  
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ
+  ijab_spinint=spinint(i,j,aoff,boff)
 end function
 
 double precision function abcd_spinint(a,b,c,d)
@@ -68,7 +44,14 @@ double precision function abcd_spinint(a,b,c,d)
   END_DOC
   
   implicit none
-  double precision :: offset_spinint
+  double precision :: spinint
+  
   integer,intent(in) :: a,b,c,d
-  abcd_spinint=offset_spinint(a,b,c,d,.True.,.True.,.True.,.True.) 
+  
+  integer :: aoff,boff,coff,doff 
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ
+  coff=c+n_spin_occ
+  doff=d+n_spin_occ
+  abcd_spinint=spinint(aoff,boff,coff,doff)
 end function

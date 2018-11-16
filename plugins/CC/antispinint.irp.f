@@ -13,23 +13,6 @@ double precision function antispinint(p,q,r,s)
   antispinint=spinint(p,q,r,s)-spinint(p,q,s,r)
 end function
 
-double precision function offset_antispinint(p,q,r,s,isvirtualp,isvirtualq,isvirtualr,isvirtuals)
-  
-  BEGIN_DOC
-  ! antisymetric spinorbital integral with offset
-  END_DOC
-  
-  implicit none
-  
-  integer,intent(in) :: p,q,r,s
-  logical,intent(in) :: isvirtualp,isvirtualq,isvirtualr,isvirtuals
-  
-  double precision :: offset_spinint
- 
-  offset_antispinint=offset_spinint(p,q,r,s,isvirtualp,isvirtualq,isvirtualr,isvirtuals)-offset_spinint(p,q,s,r,isvirtualp,isvirtualq,isvirtuals,isvirtualr)
-end function
-
-
 double precision function ijab_antispinint(i,j,a,b)
   
   BEGIN_DOC
@@ -39,9 +22,12 @@ double precision function ijab_antispinint(i,j,a,b)
   implicit none
   
   integer,intent(in) :: i,j,a,b
+  integer :: aoff,boff
+  double precision :: antispinint 
   
-  double precision :: offset_antispinint 
-  ijab_antispinint=offset_antispinint(i,j,a,b,.False.,.False.,.True.,.True.)
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ 
+  ijab_antispinint=antispinint(i,j,aoff,boff)
 end function
 
 
@@ -54,10 +40,15 @@ double precision function abcd_antispinint(a,b,c,d)
   implicit none
   
   integer,intent(in) :: a,b,c,d
+
+  integer :: aoff,boff,coff,doff 
+  double precision :: antispinint 
   
-  double precision :: offset_antispinint 
-  
-  abcd_antispinint=offset_antispinint(a,b,c,d,.True.,.True.,.True.,.True.)
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ 
+  coff=c+n_spin_occ
+  doff=d+n_spin_occ
+  abcd_antispinint=antispinint(aoff,boff,coff,doff)
 end function
 
 double precision function iajb_antispinint(i,a,j,b)
@@ -69,10 +60,13 @@ double precision function iajb_antispinint(i,a,j,b)
   implicit none
   
   integer,intent(in) :: i,a,j,b
+
+  integer :: aoff,boff
+  double precision :: antispinint 
   
-  double precision :: offset_antispinint 
-  
-  iajb_antispinint=offset_antispinint(i,a,j,b,.False.,.True.,.False.,.True.)
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ 
+  iajb_antispinint=antispinint(i,aoff,j,boff)
 end function
 
 double precision function abij_antispinint(a,b,i,j)
@@ -84,8 +78,11 @@ double precision function abij_antispinint(a,b,i,j)
   implicit none
   
   integer,intent(in) :: a,b,i,j
+
+  integer :: aoff,boff
+  double precision :: antispinint 
   
-  double precision :: offset_antispinint 
-  
-  abij_antispinint=offset_antispinint(a,b,i,j,.True.,.True.,.False.,.False.)
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ
+  abij_antispinint=antispinint(aoff,boff,i,j)
 end function
