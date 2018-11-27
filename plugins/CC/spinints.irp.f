@@ -55,3 +55,55 @@ double precision function abcd_spinint(a,b,c,d)
   doff=d+n_spin_occ
   abcd_spinint=spinint(aoff,boff,coff,doff)
 end function
+
+double precision function iajb_spinint(i,a,j,b)
+  
+  BEGIN_DOC
+  ! iajb spinorbital integral
+  END_DOC
+  
+  implicit none
+  double precision :: spinint
+  
+  integer,intent(in) :: i,a,j,b
+  
+  integer :: aoff,boff
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ
+  iajb_spinint=spinint(i,aoff,j,boff)
+end function
+
+double precision function iabj_spinint(i,a,b,j)
+
+  
+  BEGIN_DOC
+  ! iajb spinorbital integral
+  END_DOC
+  
+  implicit none
+  double precision :: spinint
+  
+  integer,intent(in) :: i,a,b,j
+  
+  integer :: aoff,boff
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ
+  iabj_spinint=spinint(i,aoff,boff,j)
+end function
+
+double precision function abij_spinint(a,b,i,j)
+  
+  BEGIN_DOC
+  ! abij spinorbital integral
+  END_DOC
+  
+  implicit none
+  double precision :: spinint
+  
+  integer,intent(in) :: a,b,i,j
+  
+  integer :: aoff,boff
+  aoff=a+n_spin_occ
+  boff=b+n_spin_occ
+  abij_spinint=spinint(aoff,boff,i,j)
+end function
