@@ -1,4 +1,4 @@
-subroutine build_ijkl_antispinint(anti)
+subroutine Build_ijkl_antispinint(anti)
   
   BEGIN_DOC
   ! ijkl integrals
@@ -8,7 +8,7 @@ subroutine build_ijkl_antispinint(anti)
   double precision,intent(out) :: anti(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ)
   double precision :: spinint
   integer :: i,j,k,l
-  anti=0d0
+  anti(:,:,:,:) = 0d0
 
   do i=1, n_spin_occ
     do j=1,n_spin_occ
@@ -21,7 +21,7 @@ subroutine build_ijkl_antispinint(anti)
   enddo
 end subroutine
 
-subroutine build_ijab_antispinint(anti)
+subroutine Build_ijab_antispinint(anti)
 
   BEGIN_DOC
   ! ijab integrals
@@ -32,7 +32,7 @@ subroutine build_ijab_antispinint(anti)
   DOUBLE PRECISION,intent(out) :: anti(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
   double precision :: ijab_spinint
   integer :: i,j,a,b
-  anti=0d0
+  anti(:,:,:,:) = 0d0
 
   do i=1, n_spin_occ
     do j=1,n_spin_occ
@@ -45,7 +45,7 @@ subroutine build_ijab_antispinint(anti)
   enddo
 end subroutine
 
-subroutine build_abcd_antispinint(anti)
+subroutine Build_abcd_antispinint(anti)
   BEGIN_DOC
   ! abcd integrals
   END_DOC
@@ -55,9 +55,9 @@ subroutine build_abcd_antispinint(anti)
   double precision,intent(out) :: anti(n_spin_virt,n_spin_virt,n_spin_virt,n_spin_virt)
   double precision :: abcd_spinint
   integer :: a,b,c,d
-  anti=0d0
+  anti(:,:,:,:) = 0d0
 
-  DO A=1, N_SPIN_Virt
+  do a=1, N_SPIN_Virt
     do b=1,n_spin_virt
       do c=1,n_spin_virt
         do d=1,n_spin_virt
@@ -68,7 +68,7 @@ subroutine build_abcd_antispinint(anti)
   enddo
 end subroutine
 
-subroutine build_iajb_antispinint(anti)
+subroutine Build_iajb_antispinint(anti)
   BEGIN_DOC
   ! iajb integrals
   END_DOC
@@ -78,7 +78,7 @@ subroutine build_iajb_antispinint(anti)
   double precision,intent(out) :: anti(n_spin_occ,n_spin_virt,n_spin_occ,n_spin_virt)
   double precision :: iajb_spinint,iabj_spinint
   integer :: i,a,j,b
-  anti=0d0
+  anti(:,:,:,:) = 0d0
  
   do i=1, n_spin_occ
     do a=1,n_spin_virt
@@ -92,7 +92,7 @@ subroutine build_iajb_antispinint(anti)
 end subroutine
 
 
-subroutine build_abij_antispinint(anti)
+subroutine Build_abij_antispinint(anti)
   BEGIN_DOC
   ! abij integrals
   END_DOC
@@ -101,7 +101,7 @@ subroutine build_abij_antispinint(anti)
   double precision,intent(out)::anti(n_spin_virt,n_spin_virt,n_spin_occ,n_spin_occ)
   double precision::abij_spinint
   integer :: a,b,i,j
-  anti=0d0
+  anti(:,:,:,:) = 0d0
 
   do a=1,n_spin_virt
     do b=1,n_spin_virt

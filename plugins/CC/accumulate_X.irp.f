@@ -1,14 +1,14 @@
-subroutine accumulate_X1(v,ijab_antispinint,t2)
+subroutine Accumulate_X1(v,ijab_antispinint,t2)
 
   implicit none
 
-  double precision,allocatable :: X1(:,:,:,:)
   double precision,intent(inout),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: V
   double precision,intent(in),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: ijab_antispinint,t2
+  double precision,allocatable :: X1(:,:,:,:)
   integer :: i,j,a,b,k,l
 
   allocate(X1(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ))
-  call build_X1(X1,ijab_antispinint,t2)
+  call Build_X1(X1,ijab_antispinint,t2)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ
@@ -25,20 +25,20 @@ subroutine accumulate_X1(v,ijab_antispinint,t2)
   enddo
 
   deallocate(X1)
-end subroutine accumulate_X1
+end subroutine Accumulate_X1
 
 
-subroutine accumulate_X2(v,ijab_antispinint,t2)
+subroutine Accumulate_X2(v,ijab_antispinint,t2)
   
   implicit none
   
-  double precision,allocatable :: X2(:,:)
   double precision,intent(inout),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: V
   double precision,intent(in),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: ijab_antispinint,t2
+  double precision,allocatable :: X2(:,:)
   integer :: i,j,a,b,c
 
   allocate(X2(n_spin_virt,n_spin_virt))
-  call build_X2(X2,ijab_antispinint,t2)
+  call Build_X2(X2,ijab_antispinint,t2)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ
@@ -54,19 +54,19 @@ subroutine accumulate_X2(v,ijab_antispinint,t2)
 
   deallocate(X2)
 
-end subroutine accumulate_X2
+end subroutine Accumulate_X2
 
-subroutine accumulate_X3(v,ijab_antispinint,t2)
+subroutine Accumulate_X3(v,ijab_antispinint,t2)
   
   implicit none
   
-  double precision,allocatable :: X3(:,:)
   double precision,intent(inout),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: V
   double precision,intent(in),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: ijab_antispinint,t2
+  double precision,allocatable :: X3(:,:)
   integer :: i,j,a,b,k
 
   allocate(X3(n_spin_virt,n_spin_virt))
-  call build_X3(X3,ijab_antispinint,t2)
+  call Build_X3(X3,ijab_antispinint,t2)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ
@@ -82,20 +82,20 @@ subroutine accumulate_X3(v,ijab_antispinint,t2)
 
   deallocate(X3)
 
-end subroutine accumulate_X3
+end subroutine Accumulate_X3
 
 
-subroutine accumulate_X4(v,ijab_antispinint,t2)
+subroutine Accumulate_X4(v,ijab_antispinint,t2)
   
   implicit none
   
-  double precision,allocatable :: X4(:,:,:,:)
   double precision,intent(inout),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: V
   double precision,intent(in),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: ijab_antispinint,t2
+  double precision,allocatable :: X4(:,:,:,:)
   integer :: i,j,a,b,k,c
 
   allocate(X4(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
-  call build_X4(X4,ijab_antispinint,t2)
+  call Build_X4(X4,ijab_antispinint,t2)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ
@@ -113,4 +113,4 @@ subroutine accumulate_X4(v,ijab_antispinint,t2)
 
   deallocate(X4)
 
-end subroutine accumulate_X3
+end subroutine Accumulate_X3
