@@ -5,7 +5,6 @@ subroutine Build_Delta(Delta)
   END_DOC
   double precision,intent(out) :: Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
   integer :: i,j,a,b
-  ! At start Δ is the MP2 try vector
   do i=1,n_spin_occ
     do j=1,n_spin_occ
       do a=1,n_spin_virt

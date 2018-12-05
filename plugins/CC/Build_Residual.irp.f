@@ -1,4 +1,4 @@
-subroutine Build_residual(residual,t2,abij_antispinint,u,v,Delta)
+subroutine Build_Residual(residual,t2,abij_antispinint,u,v,Delta)
   BEGIN_DOC
   ! residual
   END_DOC

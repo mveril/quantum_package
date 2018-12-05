@@ -1,4 +1,4 @@
-subroutine Build_u(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
+subroutine Build_U(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
   
   BEGIN_DOC
   ! U

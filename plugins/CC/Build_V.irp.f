@@ -1,4 +1,4 @@
-subroutine Build_v(v,ijab_antispinint,t2)
+subroutine Build_V(v,ijab_antispinint,t2)
   
   BEGIN_DOC
   ! V matrix 

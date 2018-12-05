@@ -24,7 +24,8 @@ END_DOC
   allocate(t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
   allocate(Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
   allocate(inv_Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
-! Build all constant array  
+
+! Build all constant arrays
 
   call Build_ijkl_antispinint(ijkl_antispinint)
   call Build_ijab_antispinint(ijab_antispinint)
@@ -34,6 +35,7 @@ END_DOC
   call Build_Delta(Delta)
   inv_Delta(:,:,:,:) = 1d0/Delta(:,:,:,:)
   call Init_t2(t2, ijab_antispinint, inv_Delta)
+
 ! Allocate all loop dependent arrays
 
   allocate(u(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))

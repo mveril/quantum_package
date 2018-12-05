@@ -17,7 +17,7 @@ double precision::MP2_corr
       do a=1,n_spin_virt
         do b=1,n_spin_virt
           t2(i,j,a,b) = ijab_antispinint(i,j,a,b)*(-inv_Delta(i, j, a, b))
-          MP2_corr += 0.25d0*ijab_antispinint(i,j,a,b)*t2(i, j, a, b)
+          MP2_corr += 0.25d0*ijab_antispinint(i, j, a , b)*t2(i, j, a, b)
         enddo
       enddo
     enddo

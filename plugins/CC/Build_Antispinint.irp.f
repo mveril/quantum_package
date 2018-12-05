@@ -38,7 +38,7 @@ subroutine Build_ijab_antispinint(anti)
     do j=1,n_spin_occ
       do a=1,n_spin_virt
         do b=1,n_spin_virt
-           anti(i,j,a,b) = ijab_spinint(i,j,a,b)-ijab_spinint(i,j,b,a)
+          anti(i,j,a,b) = ijab_spinint(i,j,a,b)-ijab_spinint(i,j,b,a)
         enddo
       enddo 
     enddo
@@ -61,7 +61,7 @@ subroutine Build_abcd_antispinint(anti)
     do b=1,n_spin_virt
       do c=1,n_spin_virt
         do d=1,n_spin_virt
-           anti(a,b,c,d) = abcd_spinint(a,b,c,d)-abcd_spinint(a,b,d,c)
+          anti(a,b,c,d) = abcd_spinint(a,b,c,d)-abcd_spinint(a,b,d,c)
         enddo
       enddo 
     enddo
@@ -84,7 +84,7 @@ subroutine Build_iajb_antispinint(anti)
     do a=1,n_spin_virt
       do j=1,n_spin_occ
         do b=1,n_spin_virt
-           anti(i,a,j,b) = iajb_spinint(i,a,j,b)-iabj_spinint(i,a,b,j)
+          anti(i,a,j,b) = iajb_spinint(i,a,j,b)-iabj_spinint(i,a,b,j)
         enddo
       enddo 
     enddo
@@ -107,7 +107,7 @@ subroutine Build_abij_antispinint(anti)
     do b=1,n_spin_virt
       do i=1, n_spin_occ
         do j=1,n_spin_occ
-           anti(a,b,i,j) = abij_spinint(a,b,i,j)-abij_spinint(a,b,j,i)
+          anti(a,b,i,j) = abij_spinint(a,b,i,j)-abij_spinint(a,b,j,i)
         enddo
       enddo 
     enddo
