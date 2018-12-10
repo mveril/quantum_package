@@ -28,13 +28,46 @@ END_DOC
 ! Build all constant arrays
 
   call Build_ijkl_antispinint(ijkl_antispinint)
+  if (Debug) then
+    print *, "OOOO"
+    call matout(n_spin_occ*2,n_spin_occ*2,ijkl_antispinint)
+  end if
   call Build_ijab_antispinint(ijab_antispinint)
+  if (Debug) then
+    print *, "OOVV"
+    call matout(n_spin_occ*2,n_spin_virt*2,ijab_antispinint)
+  end if
   call Build_abij_antispinint(abij_antispinint)
+  if (Debug) then
+    print *, "VVOO"
+    call matout(n_spin_virt*2,n_spin_occ*2,abij_antispinint)
+  end if
   call Build_iajb_antispinint(iajb_antispinint)
+  if (Debug) then
+    print *, "OVOV"
+    call matout(n_spin_occ*2,n_spin_virt*2,iajb_antispinint)
+  end if
   call Build_abcd_antispinint(abcd_antispinint)
+  if (Debug) then
+    print *, "VVVV"
+    call matout(n_spin_virt*2,n_spin_virt*2,abcd_antispinint)
+  end if
   call Build_Delta(Delta)
+  if (Debug) then
+    print *, "Delta"
+    call matout(n_spin_occ*2,n_spin_virt*2,Delta)
+  end if
   inv_Delta(:,:,:,:) = 1d0/Delta(:,:,:,:)
+  if (Debug) then
+    print *, "inv_delta"
+    call matout(n_spin_occ*2,n_spin_occ*2,inv_delta)
+  end if
   call Init_t2(t2, ijab_antispinint, inv_Delta)
+  if (Debug) then
+    print *, "t2"
+    call matout(n_spin_occ*2,n_spin_virt*2,t2)
+  end if
+
 
 ! Allocate all loop dependent arrays
 
@@ -51,12 +84,23 @@ END_DOC
 !   Build u and v
 
     call Build_U(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
+    if (Debug) then
+      print *, "U"
+      call matout(n_spin_occ*2,n_spin_virt*2,U)
+    end if
     call Build_V(v,ijab_antispinint,t2)
+    if (Debug) then
+      print *, "V"
+      call matout(n_spin_occ*2,n_spin_virt*2,V)
+    end if
 
 !   Update residual
 
     call Build_Residual(residual, t2, abij_antispinint, u, v, Delta)
-
+    if (Debug) then
+      print *, "residual"
+      call matout(n_spin_occ*2,n_spin_virt*2,residual)
+    end if
 !   Update amplitudes and calculate current CCD correlation energy
 
     CCD_corr = 0d0
@@ -70,6 +114,10 @@ END_DOC
         end do
       end do
     end do    
+    if (Debug) then
+      print *, "t2"
+      call matout(n_spin_occ*2,n_spin_virt*2,t2)
+    end if
     CCD_corr *= 0.25d0
 
 !   Convergence criteria
