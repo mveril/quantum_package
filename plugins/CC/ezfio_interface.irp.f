@@ -3,40 +3,6 @@
 ! from file /mnt/beegfs/mveril/git/quantum_package/src/CC/EZFIO.cfg
 
 
-BEGIN_PROVIDER [ logical, debug  ]
-  implicit none
-  BEGIN_DOC
-! Enable debug mode
-  END_DOC
-
-  logical                        :: has
-  PROVIDE ezfio_filename
-  if (mpi_master) then
-    
-    call ezfio_has_cc_debug(has)
-    if (has) then
-      call ezfio_get_cc_debug(debug)
-    else
-      print *, 'cc/debug not found in EZFIO file'
-      stop 1
-    endif
-  endif
-  IRP_IF MPI
-    include 'mpif.h'
-    integer :: ierr
-    call MPI_BCAST( debug, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, ierr)
-    if (ierr /= MPI_SUCCESS) then
-      stop 'Unable to read debug with MPI'
-    endif
-  IRP_ENDIF
-
-  call write_time(6)
-  if (mpi_master) then
-    write(6, *) 'Read  debug'
-  endif
-
-END_PROVIDER
-
 BEGIN_PROVIDER [ double precision, thresh_cc  ]
   implicit none
   BEGIN_DOC

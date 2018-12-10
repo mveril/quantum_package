@@ -1,7 +1,7 @@
 program CC
   
   implicit none
- 
+  
   integer :: i,Conv_Spin_Index,a
   BEGIN_DOC
 ! Coupled Cluster module
@@ -11,11 +11,11 @@ program CC
   if (Debug) then
     print *, "Occupeid"
     do i=1,n_spin_occ
-      print *, eigenvalues_fock_matrix_ao(Conv_Spin_Index(i))
+      print *, fock_matrix_mo(Conv_Spin_Index(i),Conv_Spin_Index(i))
     end do
     print *, "Virtuals"
     do a=1,n_spin_virt
-      print *,eigenvalues_fock_matrix_ao(Conv_Spin_Index(a+n_spin_occ))
+      print *,fock_matrix_mo(Conv_Spin_Index(a+n_spin_occ),Conv_Spin_Index(a+n_spin_occ))
       !call write_double(6,eigenvalues_fock_matrix_ao(Conv_Spin_Index(a+n_spin_occ)))
     end do
   end if

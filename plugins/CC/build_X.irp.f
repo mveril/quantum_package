@@ -1,4 +1,4 @@
-subroutine Build_X1(X1,ijab_antispinint,t2)
+subroutine build_X1(X1,ijab_antispinint,t2)
   
   BEGIN_DOC
   ! X1 matrix 
@@ -28,9 +28,9 @@ subroutine Build_X1(X1,ijab_antispinint,t2)
     end do
   end do
 
-end subroutine
+end subroutine build_X1
 
-subroutine Build_X2(X2,ijab_antispinint,t2)
+subroutine build_X2(X2,ijab_antispinint,t2)
   
   BEGIN_DOC
   ! X2 matrix
@@ -45,11 +45,11 @@ subroutine Build_X2(X2,ijab_antispinint,t2)
 
   X2(:,:) = 0d0
 
-  do b = 1,n_spin_virt
-    do c = 1,n_spin_virt
-      do k = 1,n_spin_occ
-        do l = 1,n_spin_occ
-          do d = 1,n_spin_virt
+  do b=1,n_spin_virt
+    do c=1,n_spin_virt
+      do k=1,n_spin_occ
+        do l=1,n_spin_occ
+          do d=1,n_spin_virt
             X2(b,c) += ijab_antispinint(k,l,c,d)*t2(k,l,b,d)
           enddo
         enddo
@@ -57,9 +57,9 @@ subroutine Build_X2(X2,ijab_antispinint,t2)
   enddo
 enddo
 
-end subroutine
+end subroutine build_X2
 
-subroutine Build_X3(X3,ijab_antispinint,t2)
+subroutine build_X3(X3,ijab_antispinint,t2)
 
   BEGIN_DOC
   ! X3 matrix
@@ -76,9 +76,9 @@ subroutine Build_X3(X3,ijab_antispinint,t2)
 
   do k=1,n_spin_occ
     do j=1,n_spin_occ
-      do d=1, n_spin_virt 
-        do c=1, n_spin_virt
-          do l=1, n_spin_occ
+      do d=1,n_spin_virt 
+        do c=1,n_spin_virt
+          do l=1,n_spin_occ
             X3(k,j) += ijab_antispinint(k,l,c,d)*t2(j,l,c,d)
           enddo
         enddo
@@ -86,9 +86,9 @@ subroutine Build_X3(X3,ijab_antispinint,t2)
     enddo
   enddo
 
-end subroutine
+end subroutine build_X3
 
-subroutine Build_x4(X4,ijab_antispinint,t2)
+subroutine build_X4(X4,ijab_antispinint,t2)
   
   BEGIN_DOC
   ! X4 matrix
@@ -107,8 +107,8 @@ subroutine Build_x4(X4,ijab_antispinint,t2)
     do l=1,n_spin_occ
       do a=1,n_spin_virt
         do d=1,n_spin_virt
-          do k = 1,n_spin_occ
-            do c = 1,n_spin_virt
+          do k=1,n_spin_occ
+            do c=1,n_spin_virt
               X4(i,l,a,d) += ijab_antispinint(k,l,c,d)*t2(i,k,a,c)
             end do
           end do
@@ -117,4 +117,4 @@ subroutine Build_x4(X4,ijab_antispinint,t2)
     end do
   end do
 
-end subroutine
+end subroutine build_X4

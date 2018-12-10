@@ -1,7 +1,7 @@
-subroutine Build_U(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
+subroutine build_u(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
   
   BEGIN_DOC
-  ! U
+  ! Put a bloody title
   END_DOC
   
   implicit none
@@ -20,31 +20,37 @@ subroutine Build_U(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
     do j=1,n_spin_occ
       do a=1,n_spin_virt
         do b=1,n_spin_virt
+
           pcd = 0d0
-          pkl = 0d0
-          pkc = 0d0
           do c=1,n_spin_virt
             do d=1,n_spin_virt
-              !cd loop
               pcd += abcd_antispinint(a,b,c,d)*t2(i,j,c,d)
             end do
           end do
+
+          pkl = 0d0
+          pkc = 0d0
           do k=1,n_spin_occ
+
             do l=1 ,n_spin_occ
-              !Kl loop
               pkl += ijkl_antispinint(k,l,i,j)*t2(k,l,a,b)
             end do
+
             do c=1,n_spin_virt
-              !KC only part
-              pkc -=iajb_antispinint(k,b,j,c)*t2(i,k,a,c)
-              pkc +=iajb_antispinint(k,a,j,c)*t2(i,k,b,c)
-              pkc -=iajb_antispinint(k,a,i,c)*t2(j,k,b,c)
-              pkc +=iajb_antispinint(k,b,i,c)*t2(j,k,a,c)
+              pkc = pkc                                   &
+                  - ovov_antispinint(k,b,j,c)*t2(i,k,a,c) &
+                  + ovov_antispinint(k,a,j,c)*t2(i,k,b,c) &
+                  - ovov_antispinint(k,a,i,c)*t2(j,k,b,c) &
+                  + ovov_antispinint(k,b,i,c)*t2(j,k,a,c)
             end do
+
           end do
-          u(i,j,a,b) = 0.5d0*pcd+0.5d0*pkl+pkc
+
+          u(i,j,a,b) = 0.5d0*pcd + 0.5d0*pkl + pkc
+
         end do
       end do
     end do
   end do
-end subroutine
+
+end subroutine build_u

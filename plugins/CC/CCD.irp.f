@@ -1,147 +1,132 @@
 subroutine CCD
 
 BEGIN_DOC
-! CCD algorithm 
+! Coupled cluster doubles (CCD) algorithm.
+! See Pople et al. IJQC 14 545 (1978) for more details
 END_DOC
 
   implicit none
 
-  double precision:: CCD_corr
-  integer :: iteration_CCD,i,j,a,b
-  double precision :: conv
-  double precision,allocatable,dimension(:,:,:,:) :: ijkl_antispinint,ijab_antispinint,abij_antispinint,iajb_antispinint,abcd_antispinint,u,v,residual,t2,Delta,inv_Delta
-  iteration_CCD=0
-  conv = thresh_CC+1d0
-  call Write_Time(6)
+  integer                      :: it
+  double precision             :: Ec_CCD
+  double precision             :: conv
 
-! Allocate All constant arrays
+  double precision,allocatable :: oooo_db_spin_int(:,:,:,:)
+  double precision,allocatable :: oovv_db_spin_int(:,:,:,:)
+  double precision,allocatable :: vvoo_db_spin_int(:,:,:,:)
+  double precision,allocatable :: ovov_db_spin_int(:,:,:,:)
+  double precision,allocatable :: vvvv_db_spin_int(:,:,:,:)
+  double precision,allocatable :: vvvv_db_spin_int(:,:,:,:)
+  double precision,allocatable :: u(:,:,:,:)
+  double precision,allocatable :: v(:,:,:,:)
+  double precision,allocatable :: r(:,:,:,:)
+  double precision,allocatable :: t2(:,:,:,:)
+  double precision,allocatable :: oovv_Delta(:,:,:,:)
 
-  allocate(ijkl_antispinint(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ))
-  allocate(ijab_antispinint(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
-  allocate(abij_antispinint(n_spin_virt,n_spin_virt,n_spin_occ,n_spin_occ))
-  allocate(iajb_antispinint(n_spin_occ,n_spin_virt,n_spin_occ,n_spin_virt))
-  allocate(abcd_antispinint(n_spin_virt,n_spin_virt,n_spin_virt,n_spin_virt)) 
+  integer                      :: i,j,a,b
+
+! Initialize variables
+
+  it   = 0
+  conv = 1d0
+
+! Timing
+
+  call write_time(6)
+
+! Allocate arrays
+
+  allocate(oooo_db_spin_int(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ))
+  allocate(oovv_db_spin_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
+  allocate(vvoo_db_spin_int(n_spin_virt,n_spin_virt,n_spin_occ,n_spin_occ))
+  allocate(ovov_db_spin_int(n_spin_occ,n_spin_virt,n_spin_occ,n_spin_virt))
+  allocate(vvvv_db_spin_int(n_spin_virt,n_spin_virt,n_spin_virt,n_spin_virt)) 
   allocate(t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
-  allocate(Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
-  allocate(inv_Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
+  allocate(oovv_Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
 
-! Build all constant arrays
+! Build integral arrays
 
-  call Build_ijkl_antispinint(ijkl_antispinint)
-  if (Debug) then
-    print *, "OOOO"
-    call matout(n_spin_occ*2,n_spin_occ*2,ijkl_antispinint)
-  end if
-  call Build_ijab_antispinint(ijab_antispinint)
-  if (Debug) then
-    print *, "OOVV"
-    call matout(n_spin_occ*2,n_spin_virt*2,ijab_antispinint)
-  end if
-  call Build_abij_antispinint(abij_antispinint)
-  if (Debug) then
-    print *, "VVOO"
-    call matout(n_spin_virt*2,n_spin_occ*2,abij_antispinint)
-  end if
-  call Build_iajb_antispinint(iajb_antispinint)
-  if (Debug) then
-    print *, "OVOV"
-    call matout(n_spin_occ*2,n_spin_virt*2,iajb_antispinint)
-  end if
-  call Build_abcd_antispinint(abcd_antispinint)
-  if (Debug) then
-    print *, "VVVV"
-    call matout(n_spin_virt*2,n_spin_virt*2,abcd_antispinint)
-  end if
-  call Build_Delta(Delta)
-  if (Debug) then
-    print *, "Delta"
-    call matout(n_spin_occ*2,n_spin_virt*2,Delta)
-  end if
-  inv_Delta(:,:,:,:) = 1d0/Delta(:,:,:,:)
-  if (Debug) then
-    print *, "inv_delta"
-    call matout(n_spin_occ*2,n_spin_occ*2,inv_delta)
-  end if
-  call Init_t2(t2, ijab_antispinint, inv_Delta)
-  if (Debug) then
-    print *, "t2"
-    call matout(n_spin_occ*2,n_spin_virt*2,t2)
-  end if
+  call build_oooo_db_spin_int(oovv_antispinint)
+  call build_oovv_db_spin_int(oovv_antispinint)
+  call build_vvoo_db_spin_int(vvoo_antispinint)
+  call build_ovov_db_spin_int(ovov_antispinint)
+  call build_vvvv_db_spin_int(vvvv_antispinint)
 
+! Compute denominators
+
+  call build_oovv_Delta(oovv_Delta)
+
+! Initialize amplitudes
+
+  call init_t2(t2,oovv_antispinint,oovv_Delta)
 
 ! Allocate all loop dependent arrays
 
   allocate(u(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
   allocate(v(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
-  allocate(residual(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
+  allocate(r(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
 
 ! Main loop
 
-  do while(iteration_CCD < n_it_CC_max  .and. conv>thresh_CC)
-    iteration_CCD += 1
-    call Write_Int(6,iteration_CCD,'Current CCD iteration')
+  do while(it < max_it_CC  .and. conv > thresh_CC) 
 
-!   Build u and v
+!   Increment 
 
-    call Build_U(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
-    if (Debug) then
-      print *, "U"
-      call matout(n_spin_occ*2,n_spin_virt*2,U)
-    end if
-    call Build_V(v,ijab_antispinint,t2)
-    if (Debug) then
-      print *, "V"
-      call matout(n_spin_occ*2,n_spin_virt*2,V)
-    end if
+    it += 1
+
+!   Timing
+
+    call write_int(6,it,'CCD iteration n. ')
+
+!   Build linear array u
+
+    call build_u(u,oooo_db_spin_int,ovov_db_spin_int,vvvv_db_spin_int,t2)
+
+!   Build quadratic array v
+
+    call build_v(v,oovv_db_spin_int,t2)
 
 !   Update residual
 
-    call Build_Residual(residual, t2, abij_antispinint, u, v, Delta)
-    if (Debug) then
-      print *, "residual"
-      call matout(n_spin_occ*2,n_spin_virt*2,residual)
-    end if
+    call build_residual(r,t2,vvoo_db_spinint,u,v,oovv_Delta)
+
 !   Update amplitudes and calculate current CCD correlation energy
 
-    CCD_corr = 0d0
+    Ec_CCD = 0d0
     do i=1,n_spin_occ
       do j=1,n_spin_occ
         do a=1,n_spin_virt
           do b=1,n_spin_virt
-            t2(i,j,a,b) -= residual(i, j, a, b)*inv_Delta(i, j, a, b)
-            CCD_corr += ijab_antispinint(i, j, a, b)*t2(i, j, a, b)
+            t2(i,j,a,b) -= r(i,j,a,b)/oovv_Delta(i,j,a,b)
+            Ec_CCD      += oovv_db_spin_int(i,j,a,b)*t2(i,j,a,b)
           end do
         end do
       end do
     end do    
-    if (Debug) then
-      print *, "t2"
-      call matout(n_spin_occ*2,n_spin_virt*2,t2)
-    end if
-    CCD_corr *= 0.25d0
+    Ec_CCD *= 0.25d0
 
 !   Convergence criteria
 
-    conv = maxval(dabs(residual))
+    conv = maxval(abs(r))
 
 !   Dump current results
 
-    call Write_Double(6, CCD_corr, "Current CCD correction energy")
-    call Write_Double(6, HF_energy+CCD_corr, "Current CCD corrected energy")
-    call Write_Double(6, conv, "Current convergence")
+    call write_double(6,Ec_CCD,            "Current CCD correction energy")
+    call write_double(6,HF_energy + Ec_CCD,"Current CCD corrected energy" )
+    call write_double(6,conv,              "Current convergence"          )
 
   end do
 
 ! Deallocate arrays
 
-  deallocate(u,v,ijkl_antispinint,ijab_antispinint,abij_antispinint,iajb_antispinint,abcd_antispinint)
+  deallocate(u,v,oooo_db_spin_int,oovv_db_spin_int,vvoo_db_spin_int,ovov_db_spin_int,vvvv_db_spin_int)
 
 ! Dump final results
   
-  call write_time(6)
-  call write_int(6, iteration_CCD, 'Number of CCD iteration')
-  call write_double(6, conv, "Final convergence value")
-  call write_double(6, CCD_corr, "Final CCD correction")
-  call write_double(6, hf_energy+CCD_corr, "Final CCD corrected energy")
+  call write_time  (6)
+  call write_int   (6,it,              "Number of CCD iteration"   )
+  call write_double(6,conv,            "Final convergence value"   )
+  call write_double(6,Ec_CCD,          "Final CCD correction"      )
+  call write_double(6,HF_energy+Ec_CCD,"Final CCD corrected energy")
 
 end subroutine CCD

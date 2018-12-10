@@ -4,5 +4,5 @@ integer function Conv_Spin_Index(p)
 
   integer,intent(in):: p
 
-  Conv_Spin_Index = (p+1)/2
+  Conv_Spin_Index = floor((p+1)/2)
 end function Conv_Spin_Index
