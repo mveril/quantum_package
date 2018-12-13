@@ -16,7 +16,6 @@ END_DOC
   double precision,allocatable :: vvoo_db_spin_int(:,:,:,:)
   double precision,allocatable :: ovov_db_spin_int(:,:,:,:)
   double precision,allocatable :: vvvv_db_spin_int(:,:,:,:)
-  double precision,allocatable :: vvvv_db_spin_int(:,:,:,:)
   double precision,allocatable :: u(:,:,:,:)
   double precision,allocatable :: v(:,:,:,:)
   double precision,allocatable :: r(:,:,:,:)
@@ -46,11 +45,11 @@ END_DOC
 
 ! Build integral arrays
 
-  call build_oooo_db_spin_int(oovv_antispinint)
-  call build_oovv_db_spin_int(oovv_antispinint)
-  call build_vvoo_db_spin_int(vvoo_antispinint)
-  call build_ovov_db_spin_int(ovov_antispinint)
-  call build_vvvv_db_spin_int(vvvv_antispinint)
+  call build_oooo_db_spin_int(oooo_db_spin_int)
+  call build_oovv_db_spin_int(oovv_db_spin_int)
+  call build_vvoo_db_spin_int(vvoo_db_spin_int)
+  call build_ovov_db_spin_int(ovov_db_spin_int)
+  call build_vvvv_db_spin_int(vvvv_db_spin_int)
 
 ! Compute denominators
 
@@ -58,7 +57,7 @@ END_DOC
 
 ! Initialize amplitudes
 
-  call init_t2(t2,oovv_antispinint,oovv_Delta)
+  call init_t2(t2,oovv_db_spin_int,oovv_Delta)
 
 ! Allocate all loop dependent arrays
 
@@ -83,12 +82,11 @@ END_DOC
     call build_u(u,oooo_db_spin_int,ovov_db_spin_int,vvvv_db_spin_int,t2)
 
 !   Build quadratic array v
-
     call build_v(v,oovv_db_spin_int,t2)
 
 !   Update residual
 
-    call build_residual(r,t2,vvoo_db_spinint,u,v,oovv_Delta)
+    call build_residual(r,t2,vvoo_db_spin_int,u,v,oovv_Delta)
 
 !   Update amplitudes and calculate current CCD correlation energy
 

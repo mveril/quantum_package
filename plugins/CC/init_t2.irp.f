@@ -5,14 +5,13 @@
   END_DOC
 
   implicit none
+  double precision,intent(out) :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
 
-  double precision,intent(in)  :: ijab_antispinint(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+  double precision,intent(in)  :: oovv_db_spin_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
   double precision,intent(in)  :: oovv_Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
 
   integer::i,j,a,b
   double precision:: Ec_MP2
-
-  double precision,intent(out) :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
 
   ! Initialize variables 
 

@@ -1,21 +1,25 @@
-subroutine build_u(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
+subroutine build_u(u,oooo_db_spin_int,ovov_db_spin_int,abcd_antispinint,t2)
   
   BEGIN_DOC
-  ! Put a bloody title
+  ! U matrix (defined on equation 13 of pople paper 
   END_DOC
   
   implicit none
   
   
-  integer :: i,j,a,b
   double precision,intent(out) :: u(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
-  double precision,intent(in) :: ijkl_antispinint(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ)
-  double precision,intent(in) :: iajb_antispinint(n_spin_occ,n_spin_virt,n_spin_occ,n_spin_virt)
+  
+  double precision,intent(in) :: oooo_db_spin_int(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ)
+  double precision,intent(in) :: ovov_db_spin_int(n_spin_occ,n_spin_virt,n_spin_occ,n_spin_virt)
   double precision,intent(in) :: abcd_antispinint(n_spin_virt,n_spin_virt,n_spin_virt,n_spin_virt)
   double precision,intent(in) :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+  
   double precision :: pcd, pkl, pkc 
+  integer :: i,j,a,b
   integer :: k,l,c,d
+
   u(:,:,:,:) = 0d0
+
   do i=1,n_spin_occ
     do j=1,n_spin_occ
       do a=1,n_spin_virt
@@ -33,15 +37,15 @@ subroutine build_u(u,ijkl_antispinint,iajb_antispinint,abcd_antispinint,t2)
           do k=1,n_spin_occ
 
             do l=1 ,n_spin_occ
-              pkl += ijkl_antispinint(k,l,i,j)*t2(k,l,a,b)
+              pkl += oooo_db_spin_int(k,l,i,j)*t2(k,l,a,b)
             end do
 
             do c=1,n_spin_virt
               pkc = pkc                                   &
-                  - ovov_antispinint(k,b,j,c)*t2(i,k,a,c) &
-                  + ovov_antispinint(k,a,j,c)*t2(i,k,b,c) &
-                  - ovov_antispinint(k,a,i,c)*t2(j,k,b,c) &
-                  + ovov_antispinint(k,b,i,c)*t2(j,k,a,c)
+                  - ovov_db_spin_int(k,b,j,c)*t2(i,k,a,c) &
+                  + ovov_db_spin_int(k,a,j,c)*t2(i,k,b,c) &
+                  - ovov_db_spin_int(k,a,i,c)*t2(j,k,b,c) &
+                  + ovov_db_spin_int(k,b,i,c)*t2(j,k,a,c)
             end do
 
           end do

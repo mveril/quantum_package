@@ -2,9 +2,15 @@ subroutine accumulate_X1(v,oovv_db_spin_int,t2)
 
   implicit none
 
-  double precision,intent(inout) :: V(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt
-  double precision,intent(in)    :: ijab_antispinint(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+  BEGIN_DOC
+! Accumulate X1 on vector V
+  END_DOC
+
+  double precision,intent(inout) :: V(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
+  double precision,intent(in)    :: oovv_db_spin_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
   double precision,intent(in)    :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
   double precision,allocatable   :: X1(:,:,:,:)
 
   integer :: i,j,a,b,k,l
@@ -32,18 +38,25 @@ subroutine accumulate_X1(v,oovv_db_spin_int,t2)
 end subroutine accumulate_X1
 
 
-subroutine accumulate_X2(v,ijab_antispinint,t2)
+subroutine accumulate_X2(v,oovv_db_spin_int,t2)
   
   implicit none
   
-  double precision,intent(inout),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: V
-  double precision,intent(in),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: ijab_antispinint,t2
+  BEGIN_DOC
+!   Accumulate X2 on vector V
+  END_DOC
+
+  double precision,intent(inout) :: V(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
+  double precision,intent(in)    :: oovv_db_spin_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+  double precision,intent(in)    :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
   double precision,allocatable :: X2(:,:)
   integer :: i,j,a,b,c
 
   allocate(X2(n_spin_virt,n_spin_virt))
 
-  call Build_X2(X2,ijab_antispinint,t2)
+  call Build_X2(X2,oovv_db_spin_int,t2)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ
@@ -63,17 +76,24 @@ subroutine accumulate_X2(v,ijab_antispinint,t2)
 
 end subroutine Accumulate_X2
 
-subroutine Accumulate_X3(v,ijab_antispinint,t2)
+subroutine Accumulate_X3(v,oovv_db_spin_int,t2)
   
   implicit none
   
-  double precision,intent(inout),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: V
-  double precision,intent(in),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: ijab_antispinint,t2
+  BEGIN_DOC
+!   Accumulate X3 on vector V
+  END_DOC
+  
+  double precision,intent(inout) :: V(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
+  double precision,intent(in)    :: oovv_db_spin_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+  double precision,intent(in)    :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
   double precision,allocatable :: X3(:,:)
   integer :: i,j,a,b,k
 
   allocate(X3(n_spin_virt,n_spin_virt))
-  call Build_X3(X3,ijab_antispinint,t2)
+  call Build_X3(X3,oovv_db_spin_int,t2)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ
@@ -94,17 +114,25 @@ subroutine Accumulate_X3(v,ijab_antispinint,t2)
 end subroutine Accumulate_X3
 
 
-subroutine Accumulate_X4(v,ijab_antispinint,t2)
+subroutine Accumulate_X4(v,oovv_db_spin_int,t2)
   
   implicit none
   
-  double precision,intent(inout),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: V
-  double precision,intent(in),dimension(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt) :: ijab_antispinint,t2
+  BEGIN_DOC
+!   Accumulate X4 on vector V
+  END_DOC
+  
+  double precision,intent(inout) :: V(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
+  double precision,intent(in)    :: oovv_db_spin_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+  double precision,intent(in)    :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
   double precision,allocatable :: X4(:,:,:,:)
+
   integer :: i,j,a,b,k,c
 
   allocate(X4(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt))
-  call Build_X4(X4,ijab_antispinint,t2)
+  call Build_X4(X4,oovv_db_spin_int,t2)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ

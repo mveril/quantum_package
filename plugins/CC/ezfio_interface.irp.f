@@ -3,6 +3,40 @@
 ! from file /mnt/beegfs/mveril/git/quantum_package/src/CC/EZFIO.cfg
 
 
+BEGIN_PROVIDER [ logical, debug  ]
+  implicit none
+  BEGIN_DOC
+! Enable debug mode
+  END_DOC
+
+  logical                        :: has
+  PROVIDE ezfio_filename
+  if (mpi_master) then
+    
+    call ezfio_has_cc_debug(has)
+    if (has) then
+      call ezfio_get_cc_debug(debug)
+    else
+      print *, 'cc/debug not found in EZFIO file'
+      stop 1
+    endif
+  endif
+  IRP_IF MPI
+    include 'mpif.h'
+    integer :: ierr
+    call MPI_BCAST( debug, 1, MPI_LOGICAL, 0, MPI_COMM_WORLD, ierr)
+    if (ierr /= MPI_SUCCESS) then
+      stop 'Unable to read debug with MPI'
+    endif
+  IRP_ENDIF
+
+  call write_time(6)
+  if (mpi_master) then
+    write(6, *) 'Read  debug'
+  endif
+
+END_PROVIDER
+
 BEGIN_PROVIDER [ double precision, thresh_cc  ]
   implicit none
   BEGIN_DOC
@@ -37,7 +71,7 @@ BEGIN_PROVIDER [ double precision, thresh_cc  ]
 
 END_PROVIDER
 
-BEGIN_PROVIDER [ integer, n_it_cc_max  ]
+BEGIN_PROVIDER [ integer, max_it_cc  ]
   implicit none
   BEGIN_DOC
 ! Maximum number of coupled cluster iterations
@@ -47,26 +81,26 @@ BEGIN_PROVIDER [ integer, n_it_cc_max  ]
   PROVIDE ezfio_filename
   if (mpi_master) then
     
-    call ezfio_has_cc_n_it_cc_max(has)
+    call ezfio_has_cc_max_it_cc(has)
     if (has) then
-      call ezfio_get_cc_n_it_cc_max(n_it_cc_max)
+      call ezfio_get_cc_max_it_cc(max_it_cc)
     else
-      print *, 'cc/n_it_cc_max not found in EZFIO file'
+      print *, 'cc/max_it_cc not found in EZFIO file'
       stop 1
     endif
   endif
   IRP_IF MPI
     include 'mpif.h'
     integer :: ierr
-    call MPI_BCAST( n_it_cc_max, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
+    call MPI_BCAST( max_it_cc, 1, MPI_INTEGER, 0, MPI_COMM_WORLD, ierr)
     if (ierr /= MPI_SUCCESS) then
-      stop 'Unable to read n_it_cc_max with MPI'
+      stop 'Unable to read max_it_cc with MPI'
     endif
   IRP_ENDIF
 
   call write_time(6)
   if (mpi_master) then
-    write(6, *) 'Read  n_it_cc_max'
+    write(6, *) 'Read  max_it_cc'
   endif
 
 END_PROVIDER

@@ -1,4 +1,4 @@
-subroutine build_Delta(oovv_Delta)  
+subroutine build_oovv_Delta(oovv_Delta)
 
   BEGIN_DOC
   ! Delta
@@ -12,13 +12,12 @@ subroutine build_Delta(oovv_Delta)
 
   do i=1,n_spin_occ
     do j=1,n_spin_occ
-      do a=n_spin_occ+1,n_spin_tot
-        do b=n_spin_occ+1,n_spin_tot
-          oovv_Delta(i,j,a,b) = &
-                                fock_matrix_mo(Conv_Spin_Index(a),conv_spin_index(a)) &
-                              + fock_matrix_mo(conv_spin_index(b),conv_spin_index(b)) &
+      do a=1,n_spin_virt
+        do b=1,n_spin_virt
+          oovv_Delta(i,j,a,b) = fock_matrix_mo(Conv_Spin_Index(a),conv_spin_index(a+n_spin_occ)) &
+                              + fock_matrix_mo(conv_spin_index(b),conv_spin_index(b+n_spin_occ)) &
                               - fock_matrix_mo(conv_spin_index(i),conv_spin_index(i)) &
-                              - fock_matrix_mo(conv_spin_index(j),conv_spin_index(j)) &
+                              - fock_matrix_mo(conv_spin_index(j),conv_spin_index(j))
         enddo
       enddo
     enddo

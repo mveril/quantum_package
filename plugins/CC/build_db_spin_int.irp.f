@@ -6,16 +6,12 @@ subroutine build_oooo_db_spin_int(db_int)
   
   implicit none
 
-! Local  variables
+  double precision,intent(out) :: db_int(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ)
 
   double precision             :: spinint
   integer                      :: i,j,k,l
 
-! Output variables
 
-  double precision,intent(out) :: db_int(n_spin_occ,n_spin_occ,n_spin_occ,n_spin_occ)
-
-! Initialize variables
 
   db_int(:,:,:,:) = 0d0
 
@@ -23,7 +19,7 @@ subroutine build_oooo_db_spin_int(db_int)
     do j=1,n_spin_occ
       do k=1,n_spin_occ
         do l=1,n_spin_occ
-           db_int(i,j,k,l) = oooo_spinint(i,j,k,l) - oooo_spinint(i,j,l,k)
+           db_int(i,j,k,l) = spinint(i,j,k,l) - spinint(i,j,l,k)
         enddo
       enddo 
     enddo
@@ -39,12 +35,11 @@ subroutine build_oovv_db_spin_int(db_int)
 
   implicit none
 
-! Local variables 
+  double precision,intent(out) :: db_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
   double precision             :: spinint
   integer                      :: i,j,a,b
 
-! Output variables 
-  double precision,intent(out) :: db_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
 
 ! Initialize variables
 
@@ -72,6 +67,7 @@ subroutine build_vvvv_db_spin_int(db_int)
   implicit none
 
   double precision,intent(out) :: db_int(n_spin_virt,n_spin_virt,n_spin_virt,n_spin_virt)
+
   double precision :: spinint
   integer :: a,b,c,d
 
@@ -93,12 +89,13 @@ end subroutine build_vvvv_db_spin_int
 subroutine build_ovov_db_spin_int(db_int)
 
   BEGIN_DOC
-  ! iajb integrals
+  ! Build OVOV block of antisymmetrized MO integrals over spinorbitals
   END_DOC
 
   implicit none
   
   double precision,intent(out) :: db_int(n_spin_occ,n_spin_virt,n_spin_occ,n_spin_virt)
+
   double precision :: spinint
   integer :: i,a,j,b
 
@@ -117,15 +114,16 @@ subroutine build_ovov_db_spin_int(db_int)
 
 end subroutine build_ovov_db_spin_int
 
-subroutine build_vvoo_db_spin_int(anti)
+subroutine build_vvoo_db_spin_int(db_int)
 
   BEGIN_DOC
-  ! abij integrals
+  ! Build VVOO block of antisymmetrized MO integrals over spinorbitals
   END_DOC
 
   implicit none
   
   double precision,intent(out) :: db_int(n_spin_virt,n_spin_virt,n_spin_occ,n_spin_occ)
+
   double precision :: spinint
   integer :: a,b,i,j
 

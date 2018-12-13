@@ -7,19 +7,16 @@ subroutine build_residual(r,t2,vvoo_db_spin_int,u,v,oovv_Delta)
   implicit none
   
 ! Output variables 
-  double precision,intent(in)  :: abij_antispinint(n_spin_virt,n_spin_virt,n_spin_occ,n_spin_occ)
+
+  double precision,intent(out) :: r(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
+
+  double precision,intent(in)  :: vvoo_db_spin_int(n_spin_virt,n_spin_virt,n_spin_occ,n_spin_occ)
   double precision,intent(in)  :: u(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
   double precision,intent(in)  :: v(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
   double precision,intent(in)  :: t2(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
   double precision,intent(in)  :: oovv_Delta(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
 
-! Local variables
   integer                      :: i,j,a,b
-
-! Output variables 
-  double precision,intent(out) :: r(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
-
-! Initialize residual
 
   r(:,:,:,:) = 0d0
 
