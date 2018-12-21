@@ -18,6 +18,8 @@
   Ec_MP2 = 0d0
   t2(:,:,:,:) = 0d0
 
+  print*,n_spin_occ,n_spin_virt
+
   do i=1,n_spin_occ
     do j=1,n_spin_occ
       do a=1,n_spin_virt

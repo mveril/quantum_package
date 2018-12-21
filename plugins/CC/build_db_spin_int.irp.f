@@ -38,7 +38,7 @@ subroutine build_oovv_db_spin_int(db_int)
   double precision,intent(out) :: db_int(n_spin_occ,n_spin_occ,n_spin_virt,n_spin_virt)
 
   double precision             :: spinint
-  integer                      :: i,j,a,b
+  integer                      :: i,j,a,b,aoff,boff
 
 
 ! Initialize variables
@@ -48,9 +48,10 @@ subroutine build_oovv_db_spin_int(db_int)
   do i=1,n_spin_occ
     do j=1,n_spin_occ
       do a=1,n_spin_virt
+        aoff=a+n_spin_occ
         do b=1,n_spin_virt
-          db_int(i,j,a,b) = spinint(i,j,n_spin_occ+a,n_spin_occ+b) & 
-                          - spinint(i,j,n_spin_occ+b,n_spin_occ+a)
+          boff=b+n_spin_occ
+          db_int(i,j,a,b) = spinint(i,j,aoff,boff) - spinint(i,j,boff,aoff)
         enddo
       enddo 
     enddo

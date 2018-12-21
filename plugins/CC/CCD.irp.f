@@ -8,8 +8,8 @@ END_DOC
   implicit none
 
   integer                      :: it
-  double precision             :: Ec_CCD
-  double precision             :: conv
+  double precision             :: E_HF,E_MP2,Ec_MP2,E_CCD,Ec_CCD
+  double precision             :: conv,get_mo_bielec_integral,Conv_Spin_Index
 
   double precision,allocatable :: oooo_db_spin_int(:,:,:,:)
   double precision,allocatable :: oovv_db_spin_int(:,:,:,:)
@@ -46,7 +46,25 @@ END_DOC
 ! Build integral arrays
 
   call build_oooo_db_spin_int(oooo_db_spin_int)
+
+! Compute Hartree-Fock energy
+
+  call compute_HF_energy(oooo_db_spin_int,E_HF)
+
   call build_oovv_db_spin_int(oovv_db_spin_int)
+  if (DEBUG) then
+  ! do i=1,n_spin_occ
+  !   do j=1,n_spin_occ
+  !     do a=1,n_spin_virt
+  !       do b=1,n_spin_virt
+  !         print *, i,j,a,b,  oovv_db_spin_int(i,j,a,b)
+  !       enddo
+  !     enddo
+  !   enddo
+  ! enddo
+  !  stop
+  end if
+
   call build_vvoo_db_spin_int(vvoo_db_spin_int)
   call build_ovov_db_spin_int(ovov_db_spin_int)
   call build_vvvv_db_spin_int(vvvv_db_spin_int)
@@ -55,6 +73,10 @@ END_DOC
 
   call build_oovv_Delta(oovv_Delta)
 
+  if (Debug)
+!   Compute Hartree-Fock energy
+    call compute_MP2_energy(E_HF,oovv_Delta,oovv_db_spin_int,Ec_MP2,E_MP2)
+  End if
 ! Initialize amplitudes
 
   call init_t2(t2,oovv_db_spin_int,oovv_Delta)

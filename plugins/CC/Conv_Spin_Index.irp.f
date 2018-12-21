@@ -8,6 +8,7 @@ integer function Conv_Spin_Index(p)
 
   integer,intent(in):: p
 
-  Conv_Spin_Index = (p+1)/2  ! Divide integer by integer return the result of the eclidean division as integer
+! Divide integer by integer return the result of the eclidean division as integer
 
+  Conv_Spin_Index = (p+1)/2 
 end function Conv_Spin_Index
